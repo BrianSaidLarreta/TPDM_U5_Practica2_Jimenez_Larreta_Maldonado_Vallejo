@@ -1,8 +1,8 @@
 package com.example.tpdm_u5_practica2_larreta_maldonado_jimenez_vallejo;
 
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
