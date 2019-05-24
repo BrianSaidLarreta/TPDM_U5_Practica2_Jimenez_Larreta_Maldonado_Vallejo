@@ -31,7 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void entrar(String sobrenombre,String telefono){
         c = new Controlador();
-        c.insertarUsuario(sobrenombre,telefono);
+        //c.insertarUsuario(sobrenombre,telefono);
+        //c.insertarReta(sobrenombre,telefono);
+        //c.insertarPendientes(sobrenombre,telefono);
+        //c.buscarPendiente(telefono);
+        //c.buscarRetas(sobrenombre,telefono);
+        //c.eliminarPendiente(telefono);
+        //c.eliminarReta(sobrenombre,telefono);
     }
 
 
