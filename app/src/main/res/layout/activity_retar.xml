@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="40dp"
     tools:context=".Retar">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscar retador"
+        android:textAlignment="center"
+        android:textSize="48dp"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Teléfono"
+        android:textSize="24dp"
+        android:layout_marginTop="50dp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="3111234567"
+        android:textSize="21dp"
+        android:textAlignment="center"
+        android:id="@+id/retar_telefono"
+        />
+
+    <Button
+        android:id="@+id/retar_btnRetar"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="50dp"
+        android:text="larRETAR"
+        android:textSize="21dp" />
+</LinearLayout>

@@ -1,14 +1,11 @@
 package com.example.tpdm_u5_practica2_larreta_maldonado_jimenez_vallejo;
 
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Map;
 
 public class Controlador {
 
