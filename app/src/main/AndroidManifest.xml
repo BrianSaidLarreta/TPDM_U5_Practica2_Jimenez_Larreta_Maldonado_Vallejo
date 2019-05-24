@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Juego"></activity>
-        <activity android:name=".Retar" />
+        <activity android:name=".Juego">
+
+        </activity>
+        <activity android:name=".Retar" >
+
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

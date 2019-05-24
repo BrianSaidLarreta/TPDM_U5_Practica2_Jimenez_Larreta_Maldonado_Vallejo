@@ -8,6 +8,6 @@ public class Juego extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego);
+        setContentView(new LienzoJuego(this));
     }
 }
