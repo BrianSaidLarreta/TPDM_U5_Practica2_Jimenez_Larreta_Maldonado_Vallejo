@@ -26,7 +26,7 @@ public class LienzoJuego extends View implements SensorListener {
     float contar,x,y,z,xPasada,yPasada,zPasada;
     boolean otra,encontrado, cargado;
     Random rnd;
-    int jugada;
+    int jugada,turnos;
 
     Thread esperarMovimiento;
     //**************************constructor**********************//
@@ -73,6 +73,7 @@ public class LienzoJuego extends View implements SensorListener {
                     imagenes[movj1].x=(maxW/2)-100;
                     imagenes[movj1].y=maxH/4-100;
                     imagenes[movj1].pintar(canvas,p);
+
                 }
 
                 //linea que separa
@@ -99,9 +100,9 @@ public class LienzoJuego extends View implements SensorListener {
                     //        la barrita de quien gano
                 }else{
                     if(c.r.puntuacion1>c.r.puntuacion2){
-                        canvas.drawText("Ganó: "+nomR,(maxW/2)-160,maxH*0.97f,p);
+                        canvas.drawText("Perdiste "+nomR,(maxW/2)-160,maxH*0.97f,p);
                     }else{
-                        canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
+                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
                     }
                 }
                 //        }
@@ -114,7 +115,7 @@ public class LienzoJuego extends View implements SensorListener {
 
         if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
             long curTime = System.currentTimeMillis();
-
+            System.err.println(retando+"  soy otra - "+otra);
             if ((curTime - pasada) > 100) {
                 long diferencia = (curTime - pasada);
                 pasada = curTime;
@@ -124,72 +125,28 @@ public class LienzoJuego extends View implements SensorListener {
                 z = values[SensorManager.DATA_Z];
 
                 float speed = Math.abs(x+y+z - xPasada - yPasada - zPasada) / diferencia * 10000;
-
-                if (speed > SHAKE_THRESHOLD && otra) {
+                c.buscarRetas(retador,contra);
+                c.buscarRetas(retador,contra);
+                jugada = rnd.nextInt(2);
+                if(retando) {
+                    if (speed > SHAKE_THRESHOLD && c.r.movj1 == -1) {
 //
-                    c.buscarRetas(retador,contra);
-                    c.buscarRetas(retador,contra);
-
-                    jugada = rnd.nextInt(2);
-                    if(retando)
-                        if(c.r.movj1==-1){
-                            c.r.movj1=jugada;
+                        if (c.r.movj1 == -1) {
+                            c.r.movj1 = jugada;
+                            System.err.println("me cambie - " + otra);
                         }
-                    if (!retando)
-                        if(c.r.movj2==-1){
-                        c.r.movj2=jugada;
+                        validar();
+
                     }
-                    c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
-                    encontrado=true;
-                    esperarMovimiento = new Thread(){
-                      public void run(){
-                          while (encontrado){
-                              c.buscarRetas(retador,contra);
-                              c.buscarRetas(retador,contra);
-                              if(c.r.movj1 >-1 && c.r.movj2>-1){
-                                  System.err.println("encontre al otro - "+retando);
-                                  if(c.r.movj1 != c.r.movj2){
-                                      c.r.turnos++;
-                                  }
-                                  if(c.r.movj1==0 && c.r.movj2==2){
-                                      c.r.puntuacion1++;
-                                  }
-                                  if(c.r.movj1==1 && c.r.movj2==0){
-                                      c.r.puntuacion1++;
-                                  }
-                                  if(c.r.movj1==2 && c.r.movj2==1){
-                                      c.r.puntuacion1++;
-                                  }
-                                  //JUGADOR 2
-                                  if(c.r.movj2==0 && c.r.movj1==2){
-                                      c.r.puntuacion2++;
-                                  }
-                                  if(c.r.movj2==1 && c.r.movj1==0){
-                                      c.r.puntuacion2++;
-                                  }
-                                  if(c.r.movj2==2 && c.r.movj1==1){
-                                      c.r.puntuacion2++;
-                                  }
-                                  c.r.movj1=-1;
-                                  c.r.movj2=-1;
-                                  c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
-                                  encontrado=false;
-                                  otra=true;
-                              }
-                              invalidate();
-                              try {
-                                  sleep(50);
-                              } catch (InterruptedException e) {
-                                  e.printStackTrace();
-                              }
-                          }
-                      }
-                    };
-                    esperarMovimiento.start();
-                    otra=false;
-                    invalidate();
-
-
+                }
+                if(!retando){
+                    if (speed > SHAKE_THRESHOLD && c.r.movj2 == -1) {
+                        if (c.r.movj2 == -1) {
+                            c.r.movj2 = jugada;
+                            System.err.println("me cambie - " + jugada);
+                        }
+                        validar();
+                    }
                 }
                 xPasada = x;
                 yPasada = y;
@@ -203,5 +160,59 @@ public class LienzoJuego extends View implements SensorListener {
     @Override
     public void onAccuracyChanged(int sensor, int accuracy) {
 
+    }
+
+    public void validar(){
+        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+        encontrado=true;
+        esperarMovimiento = new Thread(){
+            public void run(){
+                while (encontrado){
+                    c.buscarRetas(retador,contra);
+                    c.buscarRetas(retador,contra);
+                    if(c.r.movj1 >-1 && c.r.movj2>-1){
+                        System.err.println("encontre al otro - "+retando);
+                        if(c.r.movj1 != c.r.movj2){
+                            c.r.turnos++;
+                        }
+                        if(c.r.movj1==0 && c.r.movj2==2){
+                            c.r.puntuacion1++;
+                        }
+                        if(c.r.movj1==1 && c.r.movj2==0){
+                            c.r.puntuacion1++;
+                        }
+                        if(c.r.movj1==2 && c.r.movj2==1){
+                            c.r.puntuacion1++;
+                        }
+                        //JUGADOR 2
+                        if(c.r.movj2==0 && c.r.movj1==2){
+                            c.r.puntuacion2++;
+                        }
+                        if(c.r.movj2==1 && c.r.movj1==0){
+                            c.r.puntuacion2++;
+                        }
+                        if(c.r.movj2==2 && c.r.movj1==1){
+                            c.r.puntuacion2++;
+                        }
+                        otra=true;
+                        c.r.movj1=-1;
+                        c.r.movj2=-1;
+                        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+                        invalidate();
+                        encontrado=false;
+
+                    }
+                    invalidate();
+                    try {
+                        sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        esperarMovimiento.start();
+        otra=false;
+        invalidate();
     }
 }
