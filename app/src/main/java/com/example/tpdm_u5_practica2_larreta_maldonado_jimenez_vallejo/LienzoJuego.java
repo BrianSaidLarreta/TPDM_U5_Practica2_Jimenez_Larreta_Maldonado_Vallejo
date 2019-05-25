@@ -91,6 +91,10 @@ public class LienzoJuego extends View implements SensorListener {
                 p.setColor(Color.WHITE);
                 p.setTextSize(60);
 
+                c.r.movj1=-1;
+                c.r.movj2=-1;
+                c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+
                 if(retando){
                     if(c.r.puntuacion1>c.r.puntuacion2){
                         canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
@@ -152,7 +156,7 @@ public class LienzoJuego extends View implements SensorListener {
                 yPasada = y;
                 zPasada = z;
             }
-            invalidate();
+//            invalidate();
         }
 
     }
@@ -194,15 +198,16 @@ public class LienzoJuego extends View implements SensorListener {
                         if(c.r.movj2==2 && c.r.movj1==1){
                             c.r.puntuacion2++;
                         }
-                        otra=true;
-                        c.r.movj1=-1;
-                        c.r.movj2=-1;
-                        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+                        try {
+                            sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         invalidate();
                         encontrado=false;
 
                     }
-                    invalidate();
+//                    invalidate();
                     try {
                         sleep(50);
                     } catch (InterruptedException e) {
@@ -212,7 +217,7 @@ public class LienzoJuego extends View implements SensorListener {
             }
         };
         esperarMovimiento.start();
-        otra=false;
-        invalidate();
+//        otra=false;
+//        invalidate();
     }
 }
