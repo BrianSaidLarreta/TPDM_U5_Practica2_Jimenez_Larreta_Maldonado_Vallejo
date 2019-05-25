@@ -57,7 +57,7 @@ public class Controlador {
     }
 
     public  void insertarPendientes(final String numero1,final String numero2){
-        Pendientes p = new Pendientes(numero1);
+        Pendientes p = new Pendientes(numero1,false);
 
         mDatabase.child("pendientes").child(numero2).setValue(p)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -95,7 +95,7 @@ public class Controlador {
                     }
                 });
     }
-    public void buscarPendiente(String numero2){
+    public void buscarPendiente(final String numero2){
         FirebaseDatabase.getInstance().getReference().child("pendientes").child(numero2)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -103,7 +103,8 @@ public class Controlador {
                          p = dataSnapshot.getValue(Pendientes.class);
 
                         if(p!=null) {
-                            System.out.println("YES EN INGLES");
+                           buscandoRetador=p.estado;
+                            System.out.println(" te encontre   "+numero2);
 
                         } else {
                             System.out.println("NEL PASTEL");
@@ -146,6 +147,23 @@ public class Controlador {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         System.out.println("SABE QUE PASÓ CON EL PENDIENTE WE");
+                    }
+                });
+    }
+
+    public void actualizarReta(String numero1,String numero2){
+        Pendientes p = new Pendientes(numero1,true);
+
+        mDatabase.child("pendientes").child(numero2).setValue(p)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
                     }
                 });
     }

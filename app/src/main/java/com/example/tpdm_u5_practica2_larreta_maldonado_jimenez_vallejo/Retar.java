@@ -35,37 +35,34 @@ public class Retar extends AppCompatActivity {
         contra = findViewById(R.id.retar_telefono);
         teRetan=true;
         esperaContrincante= true;
-        if(clics==0)
-        larretar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(contra.getText().toString().isEmpty()){
-                    return;
+        if(clics==0) {
+            larretar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (contra.getText().toString().isEmpty()) {
+                        return;
+                    }
+                    c.insertarPendientes(usuarioActual, contra.getText().toString());
+                    esperandoContrincante.start();
+                    clics++;
+                    larretar.setEnabled(false);
                 }
-                c.insertarPendientes(usuarioActual,contra.getText().toString());
-                esperandoContrincante.start();
-            }
-        });
+            });
+
+        }
 
         teEstanRetando = new Thread(){
             public void run(){
-                while (teRetan){
+                while (teRetan && clics==0){
                     c.buscarPendiente(usuarioActual);
                     if(c.p!=null){
-                        c.eliminarPendiente(usuarioActual);
-                        teRetan=false;
-                        
 
+                        teRetan=false;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    System.err.println(usuarioActual+" dd que esta pasando  ");
                                     aceptarReta();
-                                    if(respuesta) {
-                                        Intent r = new Intent(Retar.this, Juego.class);
-                                        r.putExtra("usuarioActual", usuarioActual);
-                                        r.putExtra("nombreUA", nombreUA);
-                                        startActivity(r);
-                                    }
                                 }
                             });
 
@@ -83,7 +80,9 @@ public class Retar extends AppCompatActivity {
             public void run(){
                 while (esperaContrincante){
                     c.buscarPendiente(contra.getText().toString());
-                    if(c.p==null){
+                    if(c.buscandoRetador){
+                        c.eliminarPendiente(contra.getText().toString());
+                        System.err.println(" si encontro  ");
                         esperaContrincante=false;
                         runOnUiThread(new Runnable() {
                             @Override
@@ -116,15 +115,14 @@ public class Retar extends AppCompatActivity {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        respuesta = true;
+                        c.actualizarReta(c.p.numero1,usuarioActual);
+                        Intent r = new Intent(Retar.this, Juego.class);
+                        r.putExtra("usuarioActual", usuarioActual);
+                        r.putExtra("nombreUA", nombreUA);
+                        startActivity(r);
                     }
                 })
-                .setNegativeButton("Rechazar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        respuesta = false;
-                    }
-                })
+                .setNegativeButton("Rechazar", null)
                 .show();
     }
 }
