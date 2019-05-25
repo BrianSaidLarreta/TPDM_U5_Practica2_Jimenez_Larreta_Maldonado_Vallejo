@@ -11,11 +11,17 @@ public class LienzoJuego extends View {
 
     Paint p = new Paint();
     int maxH,maxW;
+    Imagen[] imagenes;
     //**************************constructor**********************//
     public LienzoJuego(Context context) {
         super(context);
         maxW= getResources().getSystem().getDisplayMetrics().widthPixels;
         maxH = getResources().getSystem().getDisplayMetrics().heightPixels-200;
+        imagenes = new Imagen[]{
+            new Imagen(0,0,R.drawable.piedra,LienzoJuego.this),
+            new Imagen(0,0,R.drawable.papel2,LienzoJuego.this),
+            new Imagen(0,0,R.drawable.tijeras,LienzoJuego.this),
+        };
     }
 
     @Override

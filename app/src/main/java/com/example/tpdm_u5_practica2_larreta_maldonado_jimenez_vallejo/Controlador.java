@@ -13,7 +13,9 @@ import com.google.firebase.database.ValueEventListener;
 public class Controlador {
 
     private DatabaseReference mDatabase;
-
+    public boolean buscandoRetador,buscandoReta;
+    public Pendientes p;
+    public Retas r;
     public Controlador(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -55,9 +57,9 @@ public class Controlador {
     }
 
     public  void insertarPendientes(final String numero1,final String numero2){
-        final Pendientes u = new Pendientes(numero1);
+        Pendientes p = new Pendientes(numero1);
 
-        mDatabase.child("pendientes").child(numero2).setValue(u)
+        mDatabase.child("pendientes").child(numero2).setValue(p)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -77,10 +79,11 @@ public class Controlador {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Retas r = dataSnapshot.getValue(Retas.class);
+                         r = dataSnapshot.getValue(Retas.class);
 
                         if(r!=null) {
                             System.out.println("YES EN INGLES");
+
                         } else {
                             System.out.println("NEL PASTEL");
                         }
@@ -97,10 +100,11 @@ public class Controlador {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Pendientes p = dataSnapshot.getValue(Pendientes.class);
+                         p = dataSnapshot.getValue(Pendientes.class);
 
                         if(p!=null) {
                             System.out.println("YES EN INGLES");
+
                         } else {
                             System.out.println("NEL PASTEL");
                         }

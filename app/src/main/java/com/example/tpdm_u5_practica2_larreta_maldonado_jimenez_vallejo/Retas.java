@@ -2,16 +2,24 @@ package com.example.tpdm_u5_practica2_larreta_maldonado_jimenez_vallejo;
 
 public class Retas {
 
-    int puntuacion1, puntuacion2;
+    int puntuacion1, puntuacion2,movj1,movj2;
     int turnos;
 
-    public Retas(){}
-
-    public Retas(int n1, int n2){
-        puntuacion1 = n1;
-        puntuacion2 = n2;
+    public Retas(){
+        puntuacion1 = 0;
+        puntuacion2 = 0;
+        movj1 = -1;
+        movj2 = -1;
         turnos = 0;
     }
+
+//    public Retas(int n1, int n2){
+//        puntuacion1 = n1;
+//        puntuacion2 = n2;
+//        movj1 = -1;
+//        movj2 = -1;
+//        turnos = 0;
+//    }
 
     public int getPuntuacion1() {
         return puntuacion1;
