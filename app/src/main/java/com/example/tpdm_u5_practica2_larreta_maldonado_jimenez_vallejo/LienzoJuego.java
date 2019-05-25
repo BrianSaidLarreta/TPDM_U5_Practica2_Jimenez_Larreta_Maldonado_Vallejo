@@ -24,7 +24,7 @@ public class LienzoJuego extends View implements SensorListener {
     private static final int SHAKE_THRESHOLD = 800;
     long pasada;
     float contar,x,y,z,xPasada,yPasada,zPasada;
-    boolean otra,encontrado;
+    boolean otra,encontrado, cargado;
     Random rnd;
     int jugada;
 
@@ -52,6 +52,7 @@ public class LienzoJuego extends View implements SensorListener {
         this.retando=retando;
         encontrado=true;
         c=cc;
+        cargado=true;
     }
 
     @Override
@@ -59,46 +60,49 @@ public class LienzoJuego extends View implements SensorListener {
         p.setColor(Color.BLACK);
         p.setTextSize(60);
         //jugador de arriba
-        c.buscarRetas(retador,contra);
-        int movj1 =c.r.movj1;
-        int movj2 = c.r.movj2;
-        if(movj1>-1){
-            canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
-            imagenes[movj1].x=(maxW/2)-100;
-            imagenes[movj1].y=maxH/4;
-            imagenes[movj1].pintar(canvas,p);
-        }
-
-        //linea que separa
-        canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
-        if(movj2>-1){
-            //jugador de abajo
-            canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
-            imagenes[movj2].x=(maxW/2)-100;
-            imagenes[movj2].y=maxH/4;
-            imagenes[movj2].pintar(canvas,p);
-        }
-//        if(c.r.turnos==3){
-            p.setColor(Color.BLUE);
-            canvas.drawRect(0,maxH*0.9f,maxW,maxH,p);
-            p.setColor(Color.WHITE);
-            p.setTextSize(60);
-
-            if(retando){
-               if(c.r.puntuacion1>c.r.puntuacion2){
-                   canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
-               }else{
-                   canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
-               }
-                //        la barrita de quien gano
-            }else{
-                if(c.r.puntuacion1>c.r.puntuacion2){
-                    canvas.drawText("Ganó: "+nomR,(maxW/2)-160,maxH*0.97f,p);
-                }else{
-                    canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
-                }
+        if(cargado) {
+            c.buscarRetas(retador, contra);
+            System.err.println(retador+" si encontro  "+contra);
+            int movj1 =c.r.movj1;
+            int movj2 = c.r.movj2;
+            if(movj1>-1){
+                canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
+                imagenes[movj1].x=(maxW/2)-100;
+                imagenes[movj1].y=maxH/4;
+                imagenes[movj1].pintar(canvas,p);
             }
-//        }
+
+            //linea que separa
+            canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
+            if(movj2>-1){
+                //jugador de abajo
+                canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
+                imagenes[movj2].x=(maxW/2)-100;
+                imagenes[movj2].y=maxH/4;
+                imagenes[movj2].pintar(canvas,p);
+            }
+    //        if(c.r.turnos==3){
+                p.setColor(Color.BLUE);
+                canvas.drawRect(0,maxH*0.9f,maxW,maxH,p);
+                p.setColor(Color.WHITE);
+                p.setTextSize(60);
+
+                if(retando){
+                   if(c.r.puntuacion1>c.r.puntuacion2){
+                       canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
+                   }else{
+                       canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
+                   }
+                    //        la barrita de quien gano
+                }else{
+                    if(c.r.puntuacion1>c.r.puntuacion2){
+                        canvas.drawText("Ganó: "+nomR,(maxW/2)-160,maxH*0.97f,p);
+                    }else{
+                        canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
+                    }
+                }
+    //        }
+        }
     }
 
     @Override
@@ -163,6 +167,7 @@ public class LienzoJuego extends View implements SensorListener {
                                   c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
                                   encontrado=false;
                               }
+                              invalidate();
                               try {
                                   sleep(50);
                               } catch (InterruptedException e) {
