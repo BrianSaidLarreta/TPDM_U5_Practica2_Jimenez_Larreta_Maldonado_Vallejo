@@ -121,8 +121,8 @@ public class Retar extends AppCompatActivity {
                         c.actualizarReta(c.p.numero1,usuarioActual);
                         Intent r = new Intent(Retar.this, Juego.class);
                         r.putExtra("retador",c.p.numero1 );
-                        c.buscarUsuario(c.p.numero1);
-                        r.putExtra("nombreRetador",c.u.sobrenombre);
+//                        c.buscarUsuario(c.p.numero1);
+                        r.putExtra("nombreRetador","");
                         r.putExtra("contra",usuarioActual);
                         r.putExtra("retando",false);
                         startActivity(r);

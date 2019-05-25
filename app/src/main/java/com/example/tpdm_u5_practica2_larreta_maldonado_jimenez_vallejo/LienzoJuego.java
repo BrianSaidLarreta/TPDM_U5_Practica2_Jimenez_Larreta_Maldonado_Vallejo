@@ -30,7 +30,7 @@ public class LienzoJuego extends View implements SensorListener {
 
     Thread esperarMovimiento;
     //**************************constructor**********************//
-    public LienzoJuego(Context context, String retador, String contra,String nomR,boolean retando, Controlador cc) {
+    public LienzoJuego(Context context, String retador, String contra,String nomR,boolean retando) {
         super(context);
         maxW= getResources().getSystem().getDisplayMetrics().widthPixels;
         maxH = getResources().getSystem().getDisplayMetrics().heightPixels-200;
@@ -51,7 +51,7 @@ public class LienzoJuego extends View implements SensorListener {
         this.nomR = nomR;
         this.retando=retando;
         encontrado=true;
-        c=cc;
+        c= new Controlador();
         cargado=true;
     }
 
@@ -60,39 +60,42 @@ public class LienzoJuego extends View implements SensorListener {
         p.setColor(Color.BLACK);
         p.setTextSize(60);
         //jugador de arriba
-        if(cargado) {
+
+            c.buscarRetas(retador, contra);
             c.buscarRetas(retador, contra);
             System.err.println(retador+" si encontro  "+contra);
-            int movj1 =c.r.movj1;
-            int movj2 = c.r.movj2;
-            if(movj1>-1){
-                canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
-                imagenes[movj1].x=(maxW/2)-100;
-                imagenes[movj1].y=maxH/4;
-                imagenes[movj1].pintar(canvas,p);
-            }
+            if(c.r!=null){
 
-            //linea que separa
-            canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
-            if(movj2>-1){
-                //jugador de abajo
-                canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
-                imagenes[movj2].x=(maxW/2)-100;
-                imagenes[movj2].y=maxH/4;
-                imagenes[movj2].pintar(canvas,p);
-            }
-    //        if(c.r.turnos==3){
+                int movj1 =c.r.movj1;
+                int movj2 = c.r.movj2;
+                if(movj1>-1){
+                    canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
+                    imagenes[movj1].x=(maxW/2)-100;
+                    imagenes[movj1].y=maxH/4;
+                    imagenes[movj1].pintar(canvas,p);
+                }
+
+                //linea que separa
+                canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
+                if(movj2>-1){
+                    //jugador de abajo
+                    canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
+                    imagenes[movj2].x=(maxW/2)-100;
+                    imagenes[movj2].y=maxH/4;
+                    imagenes[movj2].pintar(canvas,p);
+                }
+                //        if(c.r.turnos==3){
                 p.setColor(Color.BLUE);
                 canvas.drawRect(0,maxH*0.9f,maxW,maxH,p);
                 p.setColor(Color.WHITE);
                 p.setTextSize(60);
 
                 if(retando){
-                   if(c.r.puntuacion1>c.r.puntuacion2){
-                       canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
-                   }else{
-                       canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
-                   }
+                    if(c.r.puntuacion1>c.r.puntuacion2){
+                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
+                    }else{
+                        canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
+                    }
                     //        la barrita de quien gano
                 }else{
                     if(c.r.puntuacion1>c.r.puntuacion2){
@@ -101,8 +104,9 @@ public class LienzoJuego extends View implements SensorListener {
                         canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
                     }
                 }
-    //        }
-        }
+                //        }
+            }
+
     }
 
     @Override
@@ -124,7 +128,7 @@ public class LienzoJuego extends View implements SensorListener {
                 if (speed > SHAKE_THRESHOLD && otra) {
 //
                     c.buscarRetas(retador,contra);
-
+                    c.buscarRetas(retador,contra);
 
                     jugada = rnd.nextInt(2);
                     if(retando)
@@ -138,6 +142,7 @@ public class LienzoJuego extends View implements SensorListener {
                     esperarMovimiento = new Thread(){
                       public void run(){
                           while (encontrado){
+                              c.buscarRetas(retador,contra);
                               c.buscarRetas(retador,contra);
                               if(c.r.movj1 >-1 && c.r.movj2>-1){
                                   if(c.r.movj1 != c.r.movj2){
@@ -166,6 +171,7 @@ public class LienzoJuego extends View implements SensorListener {
                                   c.r.movj2=-1;
                                   c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
                                   encontrado=false;
+                                  otra=true;
                               }
                               invalidate();
                               try {

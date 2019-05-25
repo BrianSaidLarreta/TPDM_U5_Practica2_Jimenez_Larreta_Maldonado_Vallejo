@@ -12,7 +12,7 @@ public class Juego extends AppCompatActivity {
         String contra = getIntent().getExtras().getString("contra");
         String nomR = getIntent().getExtras().getString("nombreRetador");
         boolean retando = getIntent().getExtras().getBoolean("retando");
-        Retar r = new Retar();
-        setContentView(new LienzoJuego(this,retador,contra,nomR,retando,r.getControlador()));
+        MainActivity r = new MainActivity();
+        setContentView(new LienzoJuego(this,retador,contra,nomR,retando));
     }
 }

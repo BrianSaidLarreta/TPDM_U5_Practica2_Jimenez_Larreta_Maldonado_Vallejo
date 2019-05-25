@@ -192,7 +192,7 @@ public class Controlador {
     public void actualizarPartida(int punt1,int punt2,int mov1,int mov2,int turnos, String n1,String n2){
         Retas rr = new Retas(punt1,punt2,mov1,mov2,turnos);
 
-        mDatabase.child("pendientes").child(n1+"-"+n2).setValue(rr)
+        mDatabase.child("retas").child(n1+"-"+n2).setValue(rr)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
