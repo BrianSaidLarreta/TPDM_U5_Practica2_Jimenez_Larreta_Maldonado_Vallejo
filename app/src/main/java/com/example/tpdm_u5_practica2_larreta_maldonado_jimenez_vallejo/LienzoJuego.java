@@ -63,7 +63,7 @@ public class LienzoJuego extends View implements SensorListener {
 
             c.buscarRetas(retador, contra);
             c.buscarRetas(retador, contra);
-            System.err.println(retador+" si encontro  "+contra);
+//            System.err.println(retador+" si encontro  "+contra);
             if(c.r!=null){
 
                 int movj1 =c.r.movj1;
@@ -131,7 +131,6 @@ public class LienzoJuego extends View implements SensorListener {
                     c.buscarRetas(retador,contra);
 
                     jugada = rnd.nextInt(2);
-                    System.err.println("estoy moviendome - "+retando);
                     if(retando)
                         if(c.r.movj1==-1){
                             c.r.movj1=jugada;
@@ -141,12 +140,14 @@ public class LienzoJuego extends View implements SensorListener {
                         c.r.movj2=jugada;
                     }
                     c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+                    encontrado=true;
                     esperarMovimiento = new Thread(){
                       public void run(){
                           while (encontrado){
                               c.buscarRetas(retador,contra);
                               c.buscarRetas(retador,contra);
                               if(c.r.movj1 >-1 && c.r.movj2>-1){
+                                  System.err.println("encontre al otro - "+retando);
                                   if(c.r.movj1 != c.r.movj2){
                                       c.r.turnos++;
                                   }

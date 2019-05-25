@@ -28,13 +28,13 @@ public class Controlador {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("EXITO");
+//                        System.out.println("EXITO");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("ERROR");
+//                        System.out.println("ERROR");
                     }
                 });
     }
@@ -46,13 +46,13 @@ public class Controlador {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("EXITO");
+//                        System.out.println("EXITO");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("ERROR");
+//                        System.out.println("ERROR");
                     }
                 });
     }
@@ -64,13 +64,13 @@ public class Controlador {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("EXITO");
+//                        System.out.println("EXITO");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("ERROR");
+//                        System.out.println("ERROR");
                     }
                 });
     }
@@ -82,10 +82,10 @@ public class Controlador {
                         u = dataSnapshot.getValue(Usuario.class);
 
                         if(u!=null) {
-                            System.out.println("YES EN INGLES");
+//                            System.out.println("YES EN INGLES");
 
                         } else {
-                            System.out.println("NEL PASTEL");
+//                            System.out.println("NEL PASTEL");
                         }
                     }
 
@@ -104,10 +104,10 @@ public class Controlador {
                          r = dataSnapshot.getValue(Retas.class);
 
                         if(r!=null) {
-                            System.out.println("YES EN INGLES");
+//                            System.out.println("YES EN INGLES");
 
                         } else {
-                            System.out.println("NEL PASTEL");
+//                            System.out.println("NEL PASTEL");
                         }
                     }
 
@@ -126,10 +126,10 @@ public class Controlador {
 
                         if(p!=null) {
                            buscandoRetador=p.estado;
-                            System.out.println(" te encontre   "+numero2);
+//                            System.out.println(" te encontre   "+numero2);
 
                         } else {
-                            System.out.println("NEL PASTEL");
+//                            System.out.println("NEL PASTEL");
                         }
                     }
 
@@ -145,13 +145,13 @@ public class Controlador {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("SE ACABO LA RETA WE");
+//                        System.out.println("SE ACABO LA RETA WE");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("NO SE BORRÓ WE");
+//                        System.out.println("NO SE BORRÓ WE");
                     }
                 });
     }
@@ -161,14 +161,14 @@ public class Controlador {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("LERO LERO SE CANCELÓ");
+//                        System.out.println("LERO LERO SE CANCELÓ");
                         System.out.println("");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("SABE QUE PASÓ CON EL PENDIENTE WE");
+//                        System.out.println("SABE QUE PASÓ CON EL PENDIENTE WE");
                     }
                 });
     }
