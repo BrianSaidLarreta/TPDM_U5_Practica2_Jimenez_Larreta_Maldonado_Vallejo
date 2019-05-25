@@ -71,7 +71,7 @@ public class LienzoJuego extends View implements SensorListener {
                 if(movj1>-1){
                     canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
                     imagenes[movj1].x=(maxW/2)-100;
-                    imagenes[movj1].y=maxH/4;
+                    imagenes[movj1].y=maxH/4-100;
                     imagenes[movj1].pintar(canvas,p);
                 }
 
@@ -81,7 +81,7 @@ public class LienzoJuego extends View implements SensorListener {
                     //jugador de abajo
                     canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
                     imagenes[movj2].x=(maxW/2)-100;
-                    imagenes[movj2].y=maxH/4;
+                    imagenes[movj2].y=maxH/4+100;
                     imagenes[movj2].pintar(canvas,p);
                 }
                 //        if(c.r.turnos==3){
@@ -131,11 +131,13 @@ public class LienzoJuego extends View implements SensorListener {
                     c.buscarRetas(retador,contra);
 
                     jugada = rnd.nextInt(2);
+                    System.err.println("estoy moviendome - "+retando);
                     if(retando)
                         if(c.r.movj1==-1){
                             c.r.movj1=jugada;
                         }
-                    else if(c.r.movj2==-1){
+                    if (!retando)
+                        if(c.r.movj2==-1){
                         c.r.movj2=jugada;
                     }
                     c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
