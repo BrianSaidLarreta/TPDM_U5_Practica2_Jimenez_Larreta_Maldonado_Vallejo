@@ -33,6 +33,8 @@ public class Retar extends AppCompatActivity {
         System.err.println(usuarioActual+" sasdasda  "+nombreUA);
         larretar = findViewById(R.id.retar_btnRetar);
         contra = findViewById(R.id.retar_telefono);
+        teRetan=true;
+        esperaContrincante= true;
         if(clics==0)
         larretar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +75,7 @@ public class Retar extends AppCompatActivity {
                 while (esperaContrincante){
                     c.buscarPendiente(contra.getText().toString());
                     if(c.p==null){
+                        esperaContrincante=false;
                         c.insertarReta(usuarioActual,contra.getText().toString());
                         Intent r = new Intent(Retar.this,Juego.class);
                         r.putExtra("usuarioActual",usuarioActual);
