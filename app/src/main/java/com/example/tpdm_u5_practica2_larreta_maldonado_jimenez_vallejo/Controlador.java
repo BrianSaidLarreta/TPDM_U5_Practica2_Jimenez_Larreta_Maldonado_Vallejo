@@ -16,6 +16,7 @@ public class Controlador {
     public boolean buscandoRetador,buscandoReta;
     public Pendientes p;
     public Retas r;
+    public Usuario u;
     public Controlador(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -70,6 +71,27 @@ public class Controlador {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         System.out.println("ERROR");
+                    }
+                });
+    }
+    public void buscarUsuario(String numero){
+        FirebaseDatabase.getInstance().getReference().child("usuarios").child(numero)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        u = dataSnapshot.getValue(Usuario.class);
+
+                        if(u!=null) {
+                            System.out.println("YES EN INGLES");
+
+                        } else {
+                            System.out.println("NEL PASTEL");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
     }
@@ -155,6 +177,22 @@ public class Controlador {
         Pendientes p = new Pendientes(numero1,true);
 
         mDatabase.child("pendientes").child(numero2).setValue(p)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+    }
+    public void actualizarPartida(int punt1,int punt2,int mov1,int mov2,int turnos, String n1,String n2){
+        Retas rr = new Retas(punt1,punt2,mov1,mov2,turnos);
+
+        mDatabase.child("pendientes").child(n1+"-"+n2).setValue(rr)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

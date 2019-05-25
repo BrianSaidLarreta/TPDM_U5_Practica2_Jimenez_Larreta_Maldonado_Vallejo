@@ -8,6 +8,11 @@ public class Juego extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new LienzoJuego(this));
+        String retador = getIntent().getExtras().getString("retador");
+        String contra = getIntent().getExtras().getString("contra");
+        String nomR = getIntent().getExtras().getString("nombreRetador");
+        boolean retando = getIntent().getExtras().getBoolean("retando");
+        Retar r = new Retar();
+        setContentView(new LienzoJuego(this,retador,contra,nomR,retando,r.getControlador()));
     }
 }

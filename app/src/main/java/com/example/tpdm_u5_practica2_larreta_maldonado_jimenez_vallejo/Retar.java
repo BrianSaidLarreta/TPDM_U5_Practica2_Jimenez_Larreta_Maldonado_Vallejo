@@ -89,8 +89,11 @@ public class Retar extends AppCompatActivity {
                             public void run() {
                                 c.insertarReta(usuarioActual,contra.getText().toString());
                                 Intent r = new Intent(Retar.this,Juego.class);
-                                r.putExtra("usuarioActual",usuarioActual);
-                                r.putExtra("nombreUA",nombreUA);
+
+                                r.putExtra("retador",usuarioActual);
+                                r.putExtra("nombreRetador",nombreUA);
+                                r.putExtra("contra",contra.getText().toString());
+                                r.putExtra("retando",true);
                                 startActivity(r);
                             }
                         });
@@ -117,12 +120,18 @@ public class Retar extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         c.actualizarReta(c.p.numero1,usuarioActual);
                         Intent r = new Intent(Retar.this, Juego.class);
-                        r.putExtra("usuarioActual", usuarioActual);
-                        r.putExtra("nombreUA", nombreUA);
+                        r.putExtra("retador",c.p.numero1 );
+                        c.buscarUsuario(c.p.numero1);
+                        r.putExtra("nombreRetador",c.u.sobrenombre);
+                        r.putExtra("contra",usuarioActual);
+                        r.putExtra("retando",false);
                         startActivity(r);
                     }
                 })
                 .setNegativeButton("Rechazar", null)
                 .show();
+    }
+    public Controlador getControlador(){
+        return c;
     }
 }
