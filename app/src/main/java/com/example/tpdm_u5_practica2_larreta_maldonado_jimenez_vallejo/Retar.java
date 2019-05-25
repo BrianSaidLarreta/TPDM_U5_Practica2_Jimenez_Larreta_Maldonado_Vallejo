@@ -54,13 +54,22 @@ public class Retar extends AppCompatActivity {
                     if(c.p!=null){
                         c.eliminarPendiente(usuarioActual);
                         teRetan=false;
-                        aceptarReta();
-                        if(respuesta){
-                            Intent r = new Intent(Retar.this,Juego.class);
-                            r.putExtra("usuarioActual",usuarioActual);
-                            r.putExtra("nombreUA",nombreUA);
-                            startActivity(r);
-                        }
+                        
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    aceptarReta();
+                                    if(respuesta) {
+                                        Intent r = new Intent(Retar.this, Juego.class);
+                                        r.putExtra("usuarioActual", usuarioActual);
+                                        r.putExtra("nombreUA", nombreUA);
+                                        startActivity(r);
+                                    }
+                                }
+                            });
+
+
                     }
                     try {
                         sleep(50);
@@ -76,11 +85,17 @@ public class Retar extends AppCompatActivity {
                     c.buscarPendiente(contra.getText().toString());
                     if(c.p==null){
                         esperaContrincante=false;
-                        c.insertarReta(usuarioActual,contra.getText().toString());
-                        Intent r = new Intent(Retar.this,Juego.class);
-                        r.putExtra("usuarioActual",usuarioActual);
-                        r.putExtra("nombreUA",nombreUA);
-                        startActivity(r);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                c.insertarReta(usuarioActual,contra.getText().toString());
+                                Intent r = new Intent(Retar.this,Juego.class);
+                                r.putExtra("usuarioActual",usuarioActual);
+                                r.putExtra("nombreUA",nombreUA);
+                                startActivity(r);
+                            }
+                        });
+
                     }
                     try {
                         sleep(50);
