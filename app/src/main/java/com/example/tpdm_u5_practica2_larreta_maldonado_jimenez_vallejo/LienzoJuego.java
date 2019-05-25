@@ -93,7 +93,7 @@ public class LienzoJuego extends View implements SensorListener {
 
                 c.r.movj1=-1;
                 c.r.movj2=-1;
-                c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+//                c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
 
                 if(retando){
                     if(c.r.puntuacion1>c.r.puntuacion2){
@@ -140,6 +140,7 @@ public class LienzoJuego extends View implements SensorListener {
                             System.err.println("me cambie - " + otra);
                         }
                         validar();
+                        invalidate();
 
                     }
                 }
@@ -150,6 +151,7 @@ public class LienzoJuego extends View implements SensorListener {
                             System.err.println("me cambie - " + jugada);
                         }
                         validar();
+                        invalidate();
                     }
                 }
                 xPasada = x;
@@ -198,6 +200,9 @@ public class LienzoJuego extends View implements SensorListener {
                         if(c.r.movj2==2 && c.r.movj1==1){
                             c.r.puntuacion2++;
                         }
+                        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
+                        c.r.movj1=-1;
+                        c.r.movj2=-1;
                         try {
                             sleep(3000);
                         } catch (InterruptedException e) {
