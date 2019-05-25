@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void entrar(String sobrenombre,String telefono){
 
-        //c.insertarUsuario(sobrenombre,telefono);
+        c.insertarUsuario(sobrenombre,telefono);
         //c.insertarReta(sobrenombre,telefono);
         //c.insertarPendientes(sobrenombre,telefono);
         //c.buscarPendiente(telefono);
@@ -47,8 +47,9 @@ public class MainActivity extends AppCompatActivity {
         //c.eliminarPendiente(telefono);
         //c.eliminarReta(sobrenombre,telefono);
         Intent e = new Intent(this,Retar.class);
-        e.putExtra("usuarioActual",usuarioActual);
-        e.putExtra("nombreUA",nombreUA);
+
+        e.putExtra("usuarioActual",telefono);
+        e.putExtra("nombreUA",sobrenombre);
         startActivity(e);
     }
 

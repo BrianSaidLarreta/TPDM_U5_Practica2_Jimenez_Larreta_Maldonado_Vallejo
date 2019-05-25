@@ -13,6 +13,7 @@ public class Retar extends AppCompatActivity {
 
     Controlador c;
     String usuarioActual,nombreUA;
+    int clics=0;
     MainActivity principal;
     Thread teEstanRetando,esperandoContrincante;
     boolean teRetan,esperaContrincante,respuesta;
@@ -25,14 +26,14 @@ public class Retar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retar);
         principal = new MainActivity();
-        Bundle extras = new Bundle();
-        usuarioActual = extras.getString("usuarioActual");
-        nombreUA = extras.getString("nombreUA");
-        c = principal.getControlador();
 
+        usuarioActual = getIntent().getExtras().getString("usuarioActual");
+        nombreUA = getIntent().getExtras().getString("nombreUA");
+        c = principal.getControlador();
+        System.err.println(usuarioActual+" sasdasda  "+nombreUA);
         larretar = findViewById(R.id.retar_btnRetar);
         contra = findViewById(R.id.retar_telefono);
-
+        if(clics==0)
         larretar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
