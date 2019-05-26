@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+
 public class MainActivity extends AppCompatActivity {
     EditText sobrenombre,telefono;
     Button entrar;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     public void entrar(String sobrenombre,String telefono){
 
         c.insertarUsuario(sobrenombre,telefono);
+
+//        c.buscarUsuario(telefono);
+//        c.actualizarUsuario(telefono,"Juan lopez");
+//        c.actualizarUsuario(telefono,"Manuel");
+//        c.buscarUsuario("123");
         //c.insertarReta(sobrenombre,telefono);
         //c.insertarPendientes(sobrenombre,telefono);
         //c.buscarPendiente(telefono);
@@ -56,6 +62,5 @@ public class MainActivity extends AppCompatActivity {
     public Controlador getControlador(){
         return c;
     }
-
 
 }

@@ -11,6 +11,7 @@ public class Retas {
         movj1 = -1;
         movj2 = -1;
         turnos = 0;
+
     }
 
     public Retas(int n1, int n2,int mov1,int mov2,int t){

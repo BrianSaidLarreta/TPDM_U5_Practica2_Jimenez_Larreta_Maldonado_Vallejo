@@ -12,7 +12,7 @@ import android.widget.EditText;
 public class Retar extends AppCompatActivity {
 
     Controlador c;
-    String usuarioActual,nombreUA;
+    String usuarioActual,nombreUA,nombreTMP;
     int clics=0;
     MainActivity principal;
     Thread teEstanRetando,esperandoContrincante;
@@ -35,7 +35,7 @@ public class Retar extends AppCompatActivity {
         contra = findViewById(R.id.retar_telefono);
         teRetan=true;
         esperaContrincante= true;
-        if(clics==0) {
+
             larretar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +49,7 @@ public class Retar extends AppCompatActivity {
                 }
             });
 
-        }
+
 
         teEstanRetando = new Thread(){
             public void run(){
@@ -88,13 +88,11 @@ public class Retar extends AppCompatActivity {
                             @Override
                             public void run() {
                                 c.insertarReta(usuarioActual,contra.getText().toString());
-                                Intent r = new Intent(Retar.this,Juego.class);
+                                iniciarActivity(
+                                        usuarioActual,
+                                        contra.getText().toString(),
+                                        true);
 
-                                r.putExtra("retador",usuarioActual);
-                                r.putExtra("nombreRetador",nombreUA);
-                                r.putExtra("contra",contra.getText().toString());
-                                r.putExtra("retando",true);
-                                startActivity(r);
                             }
                         });
 
@@ -118,14 +116,11 @@ public class Retar extends AppCompatActivity {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        c.actualizarReta(c.p.numero1,usuarioActual);
-                        Intent r = new Intent(Retar.this, Juego.class);
-                        r.putExtra("retador",c.p.numero1 );
-//                        c.buscarUsuario(c.p.numero1);
-                        r.putExtra("nombreRetador","");
-                        r.putExtra("contra",usuarioActual);
-                        r.putExtra("retando",false);
-                        startActivity(r);
+                        c.actualizarPendiente(c.p.numero1,usuarioActual);
+                        iniciarActivity(
+                                c.p.numero1,
+                                usuarioActual,
+                                false);
                     }
                 })
                 .setNegativeButton("Rechazar", null)
@@ -133,5 +128,12 @@ public class Retar extends AppCompatActivity {
     }
     public Controlador getControlador(){
         return c;
+    }
+    public void iniciarActivity(String ret,String cn,boolean reta){
+        Intent r = new Intent(Retar.this, Juego.class);
+        r.putExtra("retador",ret);
+        r.putExtra("contra",cn);
+        r.putExtra("retando",reta);
+        startActivity(r);
     }
 }

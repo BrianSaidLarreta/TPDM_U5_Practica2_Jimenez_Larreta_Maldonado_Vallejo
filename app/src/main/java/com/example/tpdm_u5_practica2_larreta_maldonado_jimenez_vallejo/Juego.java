@@ -4,15 +4,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class Juego extends AppCompatActivity {
-
+    public static Juego context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String retador = getIntent().getExtras().getString("retador");
         String contra = getIntent().getExtras().getString("contra");
-        String nomR = getIntent().getExtras().getString("nombreRetador");
         boolean retando = getIntent().getExtras().getBoolean("retando");
-        MainActivity r = new MainActivity();
-        setContentView(new LienzoJuego(this,retador,contra,nomR,retando));
+        setContentView(new LienzoJuego(this,retador,contra,retando));
+    }
+    public static Juego getInstance(){
+        return context;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        context = this;
     }
 }

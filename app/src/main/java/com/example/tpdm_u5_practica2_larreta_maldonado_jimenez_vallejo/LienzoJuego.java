@@ -16,7 +16,7 @@ import static android.content.Context.SENSOR_SERVICE;
 public class LienzoJuego extends View implements SensorListener {
 
     Controlador c;
-    String retador, contra,nomR;
+    String retador, contra;
     boolean retando;
     Paint p = new Paint();
     int maxH,maxW;
@@ -24,13 +24,15 @@ public class LienzoJuego extends View implements SensorListener {
     private static final int SHAKE_THRESHOLD = 800;
     long pasada;
     float contar,x,y,z,xPasada,yPasada,zPasada;
-    boolean otra,encontrado, cargado;
+    boolean otra,encontrado;
     Random rnd;
-    int jugada,turnos;
+    int jugada;
 
     Thread esperarMovimiento;
     //**************************constructor**********************//
-    public LienzoJuego(Context context, String retador, String contra,String nomR,boolean retando) {
+    public LienzoJuego(Context context){super(context);}
+
+    public LienzoJuego(Context context, final String retado, String contr, boolean retand) {
         super(context);
         maxW= getResources().getSystem().getDisplayMetrics().widthPixels;
         maxH = getResources().getSystem().getDisplayMetrics().heightPixels-200;
@@ -46,173 +48,18 @@ public class LienzoJuego extends View implements SensorListener {
                 SensorManager.SENSOR_DELAY_GAME);
         otra=true;
         rnd = new Random();
-        this.retador = retador;
-        this.contra = contra;
-        this.nomR = nomR;
-        this.retando=retando;
+        this.retador = retado;
+        this.contra = contr;
+
+        this.retando=retand;
         encontrado=true;
         c= new Controlador();
-        cargado=true;
-    }
+        c.buscarRetas(retador,contra,retando);
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        p.setColor(Color.BLACK);
-        p.setTextSize(60);
-        //jugador de arriba
-
-            c.buscarRetas(retador, contra);
-            c.buscarRetas(retador, contra);
-//            System.err.println(retador+" si encontro  "+contra);
-            if(c.r!=null){
-
-                int movj1 =c.r.movj1;
-                int movj2 = c.r.movj2;
-                if(movj1>-1){
-                    canvas.drawText("Jugador x",(maxW/2)-160,maxH/4,p);
-                    imagenes[movj1].x=(maxW/2)-100;
-                    imagenes[movj1].y=maxH/4-100;
-                    imagenes[movj1].pintar(canvas,p);
-
-                }
-
-                //linea que separa
-                canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
-                if(movj2>-1){
-                    //jugador de abajo
-                    canvas.drawText("Jugador y",(maxW/2)-160,maxH*0.75f,p);
-                    imagenes[movj2].x=(maxW/2)-100;
-                    imagenes[movj2].y=maxH/4+100;
-                    imagenes[movj2].pintar(canvas,p);
-                }
-                //        if(c.r.turnos==3){
-                p.setColor(Color.BLUE);
-                canvas.drawRect(0,maxH*0.9f,maxW,maxH,p);
-                p.setColor(Color.WHITE);
-                p.setTextSize(60);
-
-                c.r.movj1=-1;
-                c.r.movj2=-1;
-//                c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
-
-                if(retando){
-                    if(c.r.puntuacion1>c.r.puntuacion2){
-                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
-                    }else{
-                        canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.97f,p);
-                    }
-                    //        la barrita de quien gano
-                }else{
-                    if(c.r.puntuacion1>c.r.puntuacion2){
-                        canvas.drawText("Perdiste "+nomR,(maxW/2)-160,maxH*0.97f,p);
-                    }else{
-                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.97f,p);
-                    }
-                }
-                //        }
-            }
-
-    }
-
-    @Override
-    public void onSensorChanged(int sensor, float[] values) {
-
-        if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
-            long curTime = System.currentTimeMillis();
-            System.err.println(retando+"  soy otra - "+otra);
-            if ((curTime - pasada) > 100) {
-                long diferencia = (curTime - pasada);
-                pasada = curTime;
-
-                x = values[SensorManager.DATA_X];
-                y = values[SensorManager.DATA_Y];
-                z = values[SensorManager.DATA_Z];
-
-                float speed = Math.abs(x+y+z - xPasada - yPasada - zPasada) / diferencia * 10000;
-                c.buscarRetas(retador,contra);
-                c.buscarRetas(retador,contra);
-                jugada = rnd.nextInt(2);
-                if(retando) {
-                    if (speed > SHAKE_THRESHOLD && c.r.movj1 == -1) {
-//
-                        if (c.r.movj1 == -1) {
-                            c.r.movj1 = jugada;
-                            System.err.println("me cambie - " + otra);
-                        }
-                        validar();
-                        invalidate();
-
-                    }
-                }
-                if(!retando){
-                    if (speed > SHAKE_THRESHOLD && c.r.movj2 == -1) {
-                        if (c.r.movj2 == -1) {
-                            c.r.movj2 = jugada;
-                            System.err.println("me cambie - " + jugada);
-                        }
-                        validar();
-                        invalidate();
-                    }
-                }
-                xPasada = x;
-                yPasada = y;
-                zPasada = z;
-            }
-//            invalidate();
-        }
-
-    }
-
-    @Override
-    public void onAccuracyChanged(int sensor, int accuracy) {
-
-    }
-
-    public void validar(){
-        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
-        encontrado=true;
         esperarMovimiento = new Thread(){
             public void run(){
-                while (encontrado){
-                    c.buscarRetas(retador,contra);
-                    c.buscarRetas(retador,contra);
-                    if(c.r.movj1 >-1 && c.r.movj2>-1){
-                        System.err.println("encontre al otro - "+retando);
-                        if(c.r.movj1 != c.r.movj2){
-                            c.r.turnos++;
-                        }
-                        if(c.r.movj1==0 && c.r.movj2==2){
-                            c.r.puntuacion1++;
-                        }
-                        if(c.r.movj1==1 && c.r.movj2==0){
-                            c.r.puntuacion1++;
-                        }
-                        if(c.r.movj1==2 && c.r.movj2==1){
-                            c.r.puntuacion1++;
-                        }
-                        //JUGADOR 2
-                        if(c.r.movj2==0 && c.r.movj1==2){
-                            c.r.puntuacion2++;
-                        }
-                        if(c.r.movj2==1 && c.r.movj1==0){
-                            c.r.puntuacion2++;
-                        }
-                        if(c.r.movj2==2 && c.r.movj1==1){
-                            c.r.puntuacion2++;
-                        }
-                        c.actualizarPartida(c.r.puntuacion1,c.r.puntuacion2,c.r.movj1,c.r.movj2,c.r.turnos,retador,contra);
-                        c.r.movj1=-1;
-                        c.r.movj2=-1;
-                        try {
-                            sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        invalidate();
-                        encontrado=false;
-
-                    }
-//                    invalidate();
+                while (true) {
+                    postInvalidate();
                     try {
                         sleep(50);
                     } catch (InterruptedException e) {
@@ -222,7 +69,120 @@ public class LienzoJuego extends View implements SensorListener {
             }
         };
         esperarMovimiento.start();
-//        otra=false;
-//        invalidate();
+
+    }
+//***************** fin constructor **********************//
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        p.setTextSize(60);
+        if(c.r!=null){
+
+                int movj1 =c.r.movj1;
+                int movj2 = c.r.movj2;
+                if(retando){
+
+                    if(movj1>-1){
+                        imagenes[movj1].x=(maxW/2)-200;
+                        imagenes[movj1].y=maxH/2;
+                        imagenes[movj1].pintar(canvas,p);
+                    }
+                    if(movj2>-1){
+                        imagenes[movj2].x=(maxW/2)-200;
+                        imagenes[movj2].y=maxH/4-200;
+                        imagenes[movj2].pintar(canvas,p);
+                    }
+                }
+                else{
+                    if(movj1>-1){
+                        imagenes[movj1].x=(maxW/2)-200;
+                        imagenes[movj1].y=maxH/4-200;
+                        imagenes[movj1].pintar(canvas,p);
+                    }
+                    if(movj2>-1){
+                        //jugador de abajo
+                        imagenes[movj2].x=(maxW/2)-200;
+                        imagenes[movj2].y=maxH/2;
+                        imagenes[movj2].pintar(canvas,p);
+                    }
+                }
+                //linea que separa
+                canvas.drawLine(0,maxH/2,maxW,(maxH/2),p);
+
+            if(c.r.turnos==3){
+                p.setColor(Color.BLUE);
+                canvas.drawRect(0,maxH*0.9f,maxW,maxH,p);
+                p.setColor(Color.WHITE);
+                p.setTextSize(60);
+
+                if(retando){
+                    if(c.r.puntuacion1>c.r.puntuacion2){
+                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.96f,p);
+                    }else{
+                        canvas.drawText("Perdiste",(maxW/2)-160,maxH*0.96f,p);
+                    }
+                    //        la barrita de quien gano
+                }else{
+                    if(c.r.puntuacion1>c.r.puntuacion2){
+                        canvas.drawText("Perdiste ",(maxW/2)-160,maxH*0.96f,p);
+                    }else{
+                        canvas.drawText("Ganaste",(maxW/2)-160,maxH*0.96f,p);
+                    }
+                }
+//                c.eliminarReta(retador,contra);
+            }
+        }
+
+    }
+
+    @Override
+    public void onSensorChanged(int sensor, float[] values) {
+
+        if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
+            long curTime = System.currentTimeMillis();
+//            System.err.println(retando+"  soy otra - "+otra);
+            if ((curTime - pasada) > 100) {
+                long diferencia = (curTime - pasada);
+                pasada = curTime;
+
+                x = values[SensorManager.DATA_X];
+                y = values[SensorManager.DATA_Y];
+                z = values[SensorManager.DATA_Z];
+
+                float speed = Math.abs(x+y+z - xPasada - yPasada - zPasada) / diferencia * 10000;
+
+                jugada = rnd.nextInt(2);
+                if(retando) {
+                    if (speed > SHAKE_THRESHOLD && c.r.movj1 == -1) {
+//
+                        if (c.r.movj1 == -1) {
+                            c.actMovJ1(retador,contra,jugada);
+                        }
+                    }
+                }
+                if(!retando){
+                    if (speed > SHAKE_THRESHOLD && c.r.movj2 == -1) {
+                        if (c.r.movj2 == -1) {
+                            c.actMovJ2(retador,contra,jugada);
+                        }
+                    }
+                }
+                postInvalidate();
+                xPasada = x;
+                yPasada = y;
+                zPasada = z;
+            }
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(int sensor, int accuracy) {
+
+    }
+
+    public void iniciarHilo(){
+
+
     }
 }
